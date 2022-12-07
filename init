@@ -14,21 +14,6 @@ helm repo update
 kubectl create ns $DOMAIN_NS || true # skip if it fails
 kubectl create ns $SYSTEM_NS || true # skip if it fails
 
-echo 'Installing PodInfo FrontEnd...'
-helm upgrade --install --wait frontend \
-    --namespace $DOMAIN_NS \
-    --set replicaCount=2 \
-    --set backend=http://backend-podinfo:9898/echo \
-    podinfo/podinfo
-
-helm test frontend --namespace $DOMAIN_NS
-
-echo 'Installing PodInfo BackEnd...'
-helm upgrade --install --wait backend \
-    --namespace $DOMAIN_NS \
-    --set redis.enabled=true \
-    podinfo/podinfo
-
 echo 'Installing Prometheus ...'
 # This will install kube-state-metrics, node-exporter and pushgateway
 helm upgrade -i prometheus prometheus-community/kube-prometheus-stack --set grafana.enabled=false -n $SYSTEM_NS
