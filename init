@@ -1,0 +1,51 @@
+#!/bin/bash
+
+DOMAIN_NS=demo-domain
+SYSTEM_NS=demo-system
+
+# Add necessary repos
+helm repo add loki https://grafana.github.io/loki/charts
+helm repo add podinfo https://stefanprodan.github.io/podinfo
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+helm repo update
+
+kubectl create ns $DOMAIN_NS || true # skip if it fails
+kubectl create ns $SYSTEM_NS || true # skip if it fails
+
+echo 'Installing PodInfo FrontEnd...'
+helm upgrade --install --wait frontend \
+    --namespace $DOMAIN_NS \
+    --set replicaCount=2 \
+    --set backend=http://backend-podinfo:9898/echo \
+    podinfo/podinfo
+
+helm test frontend --namespace $DOMAIN_NS
+
+echo 'Installing PodInfo BackEnd...'
+helm upgrade --install --wait backend \
+    --namespace $DOMAIN_NS \
+    --set redis.enabled=true \
+    podinfo/podinfo
+
+echo 'Installing Prometheus ...'
+# This will install kube-state-metrics, node-exporter and pushgateway
+helm upgrade -i prometheus prometheus-community/kube-prometheus-stack --set grafana.enabled=false -n $SYSTEM_NS
+
+echo 'Installing Loki...'
+helm upgrade --install loki grafana/loki-stack --set grafana.enabled=true -n $SYSTEM_NS
+
+echo "This is your password for the 'admin' user:"
+kubectl get secret --namespace $SYSTEM_NS loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+echo 'Keep it safe!'
+
+echo 'To access your Grafana UI, use the following command:'
+echo "kubectl port-forward --namespace $SYSTEM_NS service/loki-grafana 3000:80"
+echo 'After that, you will be able to access your Grafana UI at http://localhost:3000 '
+
+echo 'Installing Metrics Server...'
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+echo 'COMPLETE!'
+
