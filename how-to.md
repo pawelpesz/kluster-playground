@@ -63,10 +63,10 @@ Add Prometheus as a DataSource to Grafana:
 
 brew install fluxcd/tap/flux
 
-export GITHUB_USERNAME=14ZOli
+export GITHUB_USERNAME=14ZOli \
 export GITHUB_TOKEN=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
 
-flux bootstrap github --owner=$GITHUB_USER --repository=playgound_kluster --branch=main --path=./releases/first-release --personal
+flux bootstrap github --owner=$GITHUB_USERNAME --repository=playgound_kluster --branch=main --path=./releases/first-release --personal
 
 flux create source helm starboard-operator --url https://aquasecurity.github.io/helm-charts --namespace demo-system
 flux create helmrelease starboard-operator --chart starboard-operator \
