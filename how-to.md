@@ -67,9 +67,3 @@ export GITHUB_USERNAME=14ZOli \
 export GITHUB_TOKEN=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
 
 flux bootstrap github --owner=$GITHUB_USERNAME --repository=playgound_kluster --branch=main --path=./releases/first-release --personal
-
-flux create source helm starboard-operator --url https://aquasecurity.github.io/helm-charts --namespace demo-system
-flux create helmrelease starboard-operator --chart starboard-operator \
- --source HelmRepository/starboard-operator \
- --chart-version 0.10.3 \
- --namespace demo-system
