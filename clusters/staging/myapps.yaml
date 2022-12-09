@@ -11,7 +11,7 @@ spec:
     branch: main
   secretRef:
     name: myapps-secret
-  url: ssh://git@github.com:14ZOli/myapps
+  url: ssh://git@github.com/14ZOli/myapps
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
