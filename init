@@ -32,10 +32,7 @@ echo 'After that, you will be able to access your Grafana UI at http://localhost
 echo 'Installing Metrics Server...'
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
-export GITHUB_USERNAME=14ZOli \
-export GITHUB_TOKEN=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
-
-flux bootstrap github --owner=$GITHUB_USERNAME --repository=playgound_kluster --branch=main --path=./releases/clusters/staging --personal
+echo 'Check the HOW-TO guide for Flux installation guidance'
 
 echo 'COMPLETE!'
 

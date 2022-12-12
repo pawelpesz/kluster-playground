@@ -6,6 +6,8 @@
 minikube start
 ```
 
+--> **YOU CAN BYPASS THE STEPS UNTIL FLUXCD BY RUNNING THE "init" SCRIPT** <--
+
 ## Install Prometheus
 
 Using Helm:
@@ -50,6 +52,8 @@ You can do that with only the following command:
 ```sh
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
+
+--> **MANUAL FROM HERE** <--
 
 ## Fluxcd v2
 
@@ -163,3 +167,36 @@ spec:
 The GitRepository targets the myapps repository every 20 seconds, on the main branch, while using the myapps-secret ssh secret.
 
 Then, it creates a Flux Kustomization resource that tracks the ./manifests/ folder for Yaml resources, under the repository that we previsouly defined, every 30 seconds.
+
+## Deploy a client app
+
+Now you can deploy any app by placing its definition at the myapps repo, under the ./manifests/ folder.
+
+Let's try, for instance, to create a nginx deployment with 2 replicas:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: demo-domain
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+```
+
+Wait 30 seconds for the Kustomize resource to sync, and the deployment should be created.
