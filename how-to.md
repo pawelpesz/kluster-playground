@@ -63,9 +63,15 @@ brew install fluxcd/tap/flux
 
 2. Create a GitHub Personal Access Token (in case of a Dev or Prod team environment, you might need a Technical User or a GitHub App). Export them as environment variables.
 
+The Personal Access Token will need the following:
+
+- Contents: Read
+- Metadata: Read
+- Administration: Read/Write (because it needs to POST into the /repos/{owner}/{repo}/keys path)
+
 ```sh
 export GITHUB_USERNAME=14ZOli \
-export GITHUB_TOKEN=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
+export GITHUB_TOKEN=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
 ```
 
 3. Init Flux by creating Flux system resources
