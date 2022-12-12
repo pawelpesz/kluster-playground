@@ -88,7 +88,9 @@ Open the target client repo, go to Settings (need Maintainer permissions, or hig
 
 3. Create a Kubernetes secret with its credentials
 
-HINT: we are using Flux's CLI because it alredy generates the known-hosts. That way, we don't need to perform a keyscan ourselves.
+We are using Flux's CLI because it alredy generates the known-hosts. That way, we don't need to perform a keyscan ourselves.
+
+This is a namespace scoped secret, so it needs to be in the same namespace as the GitRepository (or other) Kubernetes resource that references it.
 
 ```sh
 # the Flux does not consider absolute paths
@@ -96,7 +98,8 @@ cd ~/.ssh/
 
 flux create secret git myapps-secret \
  --url=ssh://git@github.com/14ZOli/myapps \
- --private-key-file=./myapps_rsa
+ --private-key-file=./myapps_rsa \
+ --namespace=demo-domain
 ```
 
 ```yaml

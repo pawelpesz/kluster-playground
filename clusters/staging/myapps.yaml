@@ -5,7 +5,7 @@ metadata:
   name: myapps-repo
   namespace: demo-domain
 spec:
-  interval: 10s
+  interval: 20s
   ref:
     branch: main
   secretRef:
@@ -18,7 +18,7 @@ metadata:
   name: demo-domain 
   namespace: demo-domain
 spec:
-  interval: 20s
+  interval: 30s
   path: ./manifests
   prune: true
   sourceRef:
