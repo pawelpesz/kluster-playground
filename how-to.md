@@ -2,73 +2,90 @@
 
 ## Start Minikube
 
-Start Minikube in a version prior to 1.25, as it fails to be compatible with Loki's latest version
+```sh
+minikube start
+```
+
+## Install Prometheus
+
+Using Helm:
 
 ```sh
-minikube start --kubernetes-version=v1.24.8
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm upgrade -i prometheus prometheus-community/kube-prometheus-stack --set grafana.enabled=false -n demo-domain
 ```
 
 ## Install Loki
 
-Using Helm, you can easily install Loki using the following commands:
+Using Helm:
 
 ```sh
 helm repo add loki https://grafana.github.io/loki/charts
 helm repo update
 
-helm upgrade --install loki loki/loki-stack -n kube-system
+helm upgrade -i loki grafana/loki-stack --set grafana.enabled=true -n kube-system
 ```
 
-## Install testing Micro Service
-
-To test the behaviour of our logging and monitoring solution, we are going to install a testing Micro Service.
-
-For that, we are going to deploy [PodInfo](https://stefanprodan.github.io/podinfo) in our Minikube Kubernetes Cluster.
+To access the Grafana UI, you'll need the admin's password.
+Fetch it from a Kubernetes Secret that the Helm chart above created:
 
 ```sh
-helm repo add podinfo https://stefanprodan.github.io/podinfo
-
-kubectl create ns test
-
-echo 'Installing PodInfo FrontEnd...'
-helm upgrade --install --wait frontend \
-    --namespace test \
-    --set replicaCount=2 \
-    --set backend=http://backend-podinfo:9898/echo \
-    podinfo/podinfo
-
-echo 'Testing the frontend installation...'
-helm test frontend --namespace test
-echo 'Success!'
-
-echo 'Installing PodInfo BackEnd...'
-helm upgrade --install --wait backend \
-    --namespace test \
-    --set redis.enabled=true \
-    podinfo/podinfo
-echo 'Success!'
+kubectl get secret --namespace demo-system loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
-ADMIN SECRET:2
-kubectl get secret --namespace kube-system my-release-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+To make it accessible from within the Cluster to your local Web Browser, Port-Forward its service:
 
-export POD_NAME=$(kubectl get pods --namespace kube-system -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=my-release" -o jsonpath="{.items[0].metadata.name}")
+```sh
+kubectl port-forward --namespace demo-system service/loki-grafana 3000:80
+```
 
-kubectl --namespace kube-system port-forward $POD_NAME 3000
+## Install Metrics Server
 
-DONE :)
+To allow Prometheus to get full CPU and Memory metrics, you'll need to install Kubernetes' Metric Server.
 
-Add Prometheus as a DataSource to Grafana:
-<svc-name>.<namespace>.svc.cluster.local:9090
+You can do that with only the following command:
 
+```sh
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+## Fluxcd v2
+
+### First Steps
+
+1. Firstly, make sure you have the Flux Cli installed. We'll be using that a few times:
+
+```sh
 brew install fluxcd/tap/flux
+```
 
+2. Create a GitHub Personal Access Token (in case of a Dev or Prod team environment, you might need a Technical User or a GitHub App). Export them as environment variables.
+
+```sh
 export GITHUB_USERNAME=14ZOli \
 export GITHUB_TOKEN=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
+```
 
-flux bootstrap github --owner=$GITHUB_USERNAME --repository=playgound_kluster --branch=main --path=./releases/clusters/staging --personal
+3. Init Flux by creating Flux system resources
 
-## Create a Secret to access the client repository
+```sh
+flux bootstrap github --owner=$GITHUB_USERNAME --repository=playgound_kluster --branch=main --path=./clusters/staging --personal
+```
+
+This will generate the following structure:
+
+```
+|-- clusters
+|   |-- staging
+|       |-- flux-system
+|           |-- gotk-components.yaml
+|           |-- gotk-sync.yaml
+|           |-- kustomization.yaml
+```
+
+### Create a Secret to access the client repository
 
 1. Firstly create a SSH Key, and create a Deploy Key in GitHub from it.
 
@@ -102,6 +119,12 @@ flux create secret git myapps-secret \
  --namespace=demo-domain
 ```
 
+### Set Fluxcd to track client repo
+
+Now that Fluxcd v2 is tracking his own Cluster folder for new Yaml files, you can set it to aim at the Client Repo for new Kubernetes resources.
+
+Under the Cluster folder, you can create the following two resources (can be in the same file):
+
 ```yaml
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
@@ -110,7 +133,7 @@ metadata:
   name: myapps-repo
   namespace: demo-domain
 spec:
-  interval: 10s
+  interval: 20s
   ref:
     branch: main
   secretRef:
@@ -123,10 +146,14 @@ metadata:
   name: demo-domain
   namespace: demo-domain
 spec:
-  interval: 20s
+  interval: 30s
   path: ./manifests
   prune: true
   sourceRef:
     kind: GitRepository
     name: myapps-repo
 ```
+
+The GitRepository targets the myapps repository every 20 seconds, on the main branch, while using the myapps-secret ssh secret.
+
+Then, it creates a Flux Kustomization resource that tracks the ./manifests/ folder for Yaml resources, under the repository that we previsouly defined, every 30 seconds.
