@@ -64,6 +64,66 @@ Add Prometheus as a DataSource to Grafana:
 brew install fluxcd/tap/flux
 
 export GITHUB_USERNAME=14ZOli \
-export GITHUB_TOKEN=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
+export GITHUB_TOKEN=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
 
-flux bootstrap github --owner=$GITHUB_USERNAME --repository=playgound_kluster --branch=main --path=./releases/first-release --personal
+flux bootstrap github --owner=$GITHUB_USERNAME --repository=playgound_kluster --branch=main --path=./releases/clusters/staging --personal
+
+## Create a Secret to access the client repository
+
+1. Firstly create a SSH Key, and create a Deploy Key in GitHub from it.
+
+You'll need to perform the following command in your local computer.
+
+```sh
+# execute this command and follow the following steps that prompt
+ssh-keygen -t rsa -b 4096
+
+# then copy the public key that was generated under ~/.ssh/
+cat ~/.ssh/id_rsa.pub
+```
+
+2. Paste it under the Deploy Keys menu of the target GitHub repository.
+
+Open the target client repo, go to Settings (need Maintainer permissions, or higher), Deploy Keys (under Security) and add a new one.
+
+3. Create a Kubernetes secret with its credentials
+
+HINT: we are using Flux's CLI because it alredy generates the known-hosts. That way, we don't need to perform a keyscan ourselves.
+
+```sh
+# the Flux does not consider absolute paths
+cd ~/.ssh/
+
+flux create secret git myapps-secret \
+ --url=ssh://git@github.com/14ZOli/myapps \
+ --private-key-file=./myapps_rsa
+```
+
+```yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: myapps-repo
+  namespace: demo-domain
+spec:
+  interval: 10s
+  ref:
+    branch: main
+  secretRef:
+    name: myapps-secret
+  url: ssh://git@github.com/14ZOli/myapps
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: demo-domain
+  namespace: demo-domain
+spec:
+  interval: 20s
+  path: ./manifests
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: myapps-repo
+```
