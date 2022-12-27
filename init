@@ -14,12 +14,14 @@ helm repo update
 kubectl create ns $DOMAIN_NS || true # skip if it fails
 kubectl create ns $SYSTEM_NS || true # skip if it fails
 
+exit 
+
 echo 'Installing Prometheus ...'
 # This will install kube-state-metrics, node-exporter and pushgateway
-helm upgrade -i prometheus prometheus-community/kube-prometheus-stack --set grafana.enabled=false -n $SYSTEM_NS
+helm upgrade -i prometheus prometheus-community/kube-prometheus-stack --set grafana.enabled=true -n $SYSTEM_NS
 
 echo 'Installing Loki...'
-helm upgrade --install loki grafana/loki-stack --set grafana.enabled=true -n $SYSTEM_NS
+helm upgrade --install loki grafana/loki-stack --set grafana.enabled=false -n $SYSTEM_NS
 
 echo "This is your password for the 'admin' user:"
 kubectl get secret --namespace $SYSTEM_NS loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo

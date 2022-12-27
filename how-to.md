@@ -6,55 +6,6 @@
 minikube start
 ```
 
---> **YOU CAN BYPASS THE STEPS UNTIL FLUXCD BY RUNNING THE "init" SCRIPT** <--
-
-## Install Prometheus
-
-Using Helm:
-
-```sh
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-
-helm upgrade -i prometheus prometheus-community/kube-prometheus-stack --set grafana.enabled=false -n demo-domain
-```
-
-## Install Loki
-
-Using Helm:
-
-```sh
-helm repo add loki https://grafana.github.io/loki/charts
-helm repo update
-
-helm upgrade -i loki grafana/loki-stack --set grafana.enabled=true -n kube-system
-```
-
-To access the Grafana UI, you'll need the admin's password.
-Fetch it from a Kubernetes Secret that the Helm chart above created:
-
-```sh
-kubectl get secret --namespace demo-system loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
-```
-
-To make it accessible from within the Cluster to your local Web Browser, Port-Forward its service:
-
-```sh
-kubectl port-forward --namespace demo-system service/loki-grafana 3000:80
-```
-
-## Install Metrics Server
-
-To allow Prometheus to get full CPU and Memory metrics, you'll need to install Kubernetes' Metric Server.
-
-You can do that with only the following command:
-
-```sh
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-```
-
---> **MANUAL FROM HERE** <--
-
 ## Fluxcd v2
 
 ### First Steps
@@ -65,13 +16,15 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 brew install fluxcd/tap/flux
 ```
 
-2. Create a GitHub Personal Access Token (in case of a Dev or Prod team environment, you might need a Technical User or a GitHub App). Export them as environment variables.
+2. Create a GitHub Personal Access Token (in case of a Dev or Prod team environment, you might need a Technical User or a GitHub App).
 
 The Personal Access Token will need the following:
 
 - Contents: Read
 - Metadata: Read
 - Administration: Read/Write (because it needs to POST into the /repos/{owner}/{repo}/keys path)
+
+Export it as environment variables:
 
 ```sh
 export GITHUB_USERNAME=14ZOli \
@@ -84,7 +37,7 @@ export GITHUB_TOKEN=github_pat_11AVVGQQQ0mJmS067HPS08_SLWQl9WMUefgNKR7pazMsFixag
 flux bootstrap github --owner=$GITHUB_USERNAME --repository=playgound_kluster --branch=main --path=./clusters/staging --personal
 ```
 
-This will generate the following structure:
+This will generate the following structure under the given repository, and install the default Flux components:
 
 ```
 |-- clusters
@@ -121,11 +74,11 @@ This is a namespace scoped secret, so it needs to be in the same namespace as th
 
 ```sh
 # the Flux does not consider absolute paths
-cd ~/.ssh/
+cd ~/.ssh/ \
 
 flux create secret git myapps-secret \
  --url=ssh://git@github.com/14ZOli/myapps \
- --private-key-file=./myapps_rsa \
+ --private-key-file=./delete_myapps_rsa \
  --namespace=demo-domain
 ```
 
@@ -200,3 +153,54 @@ spec:
 ```
 
 Wait 30 seconds for the Kustomize resource to sync, and the deployment should be created.
+
+---
+
+--> **YOU CAN BYPASS THE STEPS UNTIL THE FLUXCD SECTION BY RUNNING THE "init" SCRIPT** <--
+
+## Install Prometheus
+
+Using Helm:
+
+```sh
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm upgrade -i prometheus prometheus-community/kube-prometheus-stack --set grafana.enabled=true -n demo-domain
+```
+
+## Install Loki
+
+Using Helm:
+
+```sh
+helm repo add loki https://grafana.github.io/loki/charts
+helm repo update
+
+helm upgrade -i loki grafana/loki-stack --set grafana.enabled=false -n kube-system
+```
+
+To access the Grafana UI, you'll need the admin's password.
+Fetch it from a Kubernetes Secret that the Helm chart above created:
+
+```sh
+kubectl get secret --namespace demo-system loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
+To make it accessible from within the Cluster to your local Web Browser, Port-Forward its service:
+
+```sh
+kubectl port-forward --namespace demo-system service/loki-grafana 3000:80
+```
+
+## Install Metrics Server
+
+To allow Prometheus to get full CPU and Memory metrics, you'll need to install Kubernetes' Metric Server.
+
+You can do that with only the following command:
+
+```sh
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+--> **MANUAL FROM HERE** <--
