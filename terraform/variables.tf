@@ -1,6 +1,6 @@
 variable "github_owner" {
   type = string
-  default = "ZOli14"
+  default = "14ZOli"
 }
 
 variable "repository_name" {
