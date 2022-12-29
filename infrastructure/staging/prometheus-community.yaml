@@ -25,6 +25,9 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
+  values:
+    nodeExporter:
+      hostRootFs: false
   interval: 1h0m0s
   install:
     remediation:
