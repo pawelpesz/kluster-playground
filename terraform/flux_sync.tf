@@ -1,7 +1,7 @@
 # Generate manifests
 data "flux_sync" "main" {
   target_path = "clusters/staging"
-  url         = "https://github.com/${var.github_owner}/${var.repository_name}"
+  url         = "https://github.com/${var.github_owner}/${var.repository_name}.git"
 }
 
 # Split multi-doc YAML with
@@ -36,7 +36,7 @@ resource "kubernetes_secret" "main" {
   }
 
   data = {
-    username = "ZOli14"
+    username = var.github_owner
     password = var.flux_token
   }
 }
