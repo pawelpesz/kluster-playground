@@ -26,7 +26,7 @@ spec:
         name: prometheus-community
         namespace: flux-system
   values:
-    nodeExporter:
+    prometheus-node-exporter:
       hostRootFs: false
   interval: 1h0m0s
   install:
