@@ -7,4 +7,5 @@ resources:
 #  - ../base/kube-prometheus-stack.yaml
 patchesStrategicMerge:
   - grafana-loki-values.yaml
+  - kube-prometheus-stack-values.yaml
 
