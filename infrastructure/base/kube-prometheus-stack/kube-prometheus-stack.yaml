@@ -10,7 +10,7 @@ spec:
       chart: kube-prometheus-stack
       sourceRef:
         kind: HelmRepository
-        name: prometheus-community
+        name: kube-prometheus-stack
         namespace: infrastructure
   values:
     prometheus-node-exporter:

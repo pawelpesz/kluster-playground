@@ -10,7 +10,7 @@ spec:
       chart: loki-stack
       sourceRef:
         kind: HelmRepository
-        name: grafana-community
+        name: loki-stack
         namespace: infrastructure
   interval: 1h0m0s
   install:
