@@ -3,6 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
   name: grafana-community
+  namespace: infrastructure
 spec:
   interval: 30m
   url: https://grafana.github.io/helm-charts
@@ -19,7 +20,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: grafana-community
-        namespace: flux-system
+        namespace: infrastructure
   interval: 1h0m0s
   install:
     remediation:
