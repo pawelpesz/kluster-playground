@@ -27,8 +27,6 @@ spec:
   upgrade:
     remediation:
       remediateLastFailure: true
-  test:
-    enable: true
   values:
     service:
       grpcService: backend
@@ -58,8 +56,6 @@ spec:
   upgrade:
     remediation:
       remediateLastFailure: true
-  test:
-    enable: true
   values:
     backend: http://backend-podinfo:9898/echo
     resources:
