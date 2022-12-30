@@ -4,8 +4,8 @@ kind: Kustomization
 namespace: infrastructure
 resources:
   - namespace.yaml
-  - ../base/grafana-loki/
-  - ../base/kube-prometheus-stack/
+  - ../base/grafana-loki/kustomization.yaml
+  - ../base/kube-prometheus-stack/kustomization.yaml
 patchesStrategicMerge:
   - grafana-loki-values.yaml
   - kube-prometheus-stack-values.yaml
