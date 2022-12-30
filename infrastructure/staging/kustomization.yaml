@@ -5,3 +5,6 @@ namespace: flux-system
 resources:
   - ../base/grafana-loki.yaml
 #  - ../base/kube-prometheus-stack.yaml
+patchesStrategicMerge:
+  - grafana-loki-values.yaml
+
