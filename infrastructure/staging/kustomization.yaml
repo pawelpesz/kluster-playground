@@ -5,7 +5,7 @@ namespace: infrastructure
 resources:
   - namespace.yaml
   - ../base/grafana-loki
-  - ../base/kube-prometheus-stack
+#  - ../base/kube-prometheus-stack
 patchesStrategicMerge:
   - grafana-loki-values.yaml
   - kube-prometheus-stack-values.yaml
