@@ -1,139 +1,139 @@
-#---
-#apiVersion: helm.toolkit.fluxcd.io/v2beta1
-#kind: HelmRelease
-#metadata:
-#  name: kube-prometheus-stack
-#  namespace: infrastructure
-#spec:
-#  chart:
-#    spec:
-#      version: ">=43.2.1"
-#  values:
-#    commonLabels:
-#      tier: cluster
-#    kubeControllerManager:
-#      enabled: false
-#    kubeScheduler:
-#      enabled: false
-#    kubeProxy:
-#      enabled: false
-#    grafana:
-#      podLabels:
-#        app: grafana
-#      service:
-#        labels:
-#          app: grafana
-#      grafana.ini:
-#        server:
-#          root_url: http://grafana.demo.lab
-#      additionalDataSources:
-#        - name: Loki
-#          type: loki
-#          access: proxy
-#          uid: loki_ds
-#          url: http://loki-stack:3100
-#          jsonData:
-#            maxLines: 1000
-#      dashboardProviders:
-#        dashboardproviders.yaml:
-#          apiVersion: 1
-#          providers:
-#          - name: 'flux'
-#            orgId: 1
-#            folder: 'Flux'
-#            type: file
-#            disableDeletion: true
-#            editable: false
-#            options:
-#              path: /var/lib/grafana/dashboards/flux
-#      dashboards:
-#        flux:
-#          cluster:
-#            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
-#            token: ''
-#          control-plane:
-#            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
-#            token: ''
-#    alertmanager:
-#      serviceMonitor:
-#        scheme: "https"
-#        tlsConfig:
-#          caFile: /etc/prom-certs/root-cert.pem
-#          certFile: /etc/prom-certs/cert-chain.pem
-#          keyFile: /etc/prom-certs/key.pem
-#          insecureSkipVerify: true
-#      alertmanagerSpec:
-#        listenLocal: true
-#        externalUrl: http://alertmanager.demo.lab
-#    prometheusOperator:
-#      admissionWebhooks:
-#        patch:
-#          podAnnotations:
-#            sidecar.istio.io/inject: "false"
-#    prometheus:
-#      serviceMonitor:
-#        selfMonitor: true
-#        scheme: "https"
-#        tlsConfig:
-#          caFile: /etc/prom-certs/root-cert.pem
-#          certFile: /etc/prom-certs/cert-chain.pem
-#          keyFile: /etc/prom-certs/key.pem
-#          insecureSkipVerify: true
-#      prometheusSpec:
-#        externalLabels:
-#          cluster: demolab
-#          environment: staging
-#        externalUrl: http://prometheus.demo.lab
-#        listenLocal: true
-#        ruleSelector:
-#          matchLabels:
-#            tier: cluster
-#        serviceMonitorSelector:
-#          matchLabels:
-#            tier: cluster
-#      additionalPodMonitors:
-#        - name: source-controller
-#          additionalLabels:
-#            tier: cluster
-#          selector:
-#            matchLabels:
-#              app: source-controller
-#          namespaceSelector:
-#            matchNames:
-#              - flux-system
-#          podMetricsEndpoints:
-#            - port: http-prom
-#        - name: kustomize-controller
-#          additionalLabels:
-#            tier: cluster
-#          selector:
-#            matchLabels:
-#              app: kustomize-controller
-#          namespaceSelector:
-#            matchNames:
-#              - flux-system
-#          podMetricsEndpoints:
-#            - port: http-prom
-#        - name: helm-controller
-#          additionalLabels:
-#            tier: cluster
-#          selector:
-#            matchLabels:
-#              app: helm-controller
-#          namespaceSelector:
-#            matchNames:
-#              - flux-system
-#          podMetricsEndpoints:
-#            - port: http-prom
-#        - name: notification-controller
-#          additionalLabels:
-#            tier: cluster
-#          selector:
-#            matchLabels:
-#              app: notification-controller
-#          namespaceSelector:
-#            matchNames:
-#              - flux-system
-#          podMetricsEndpoints:
-#            - port: http-prom
-#
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: infrastructure
+spec:
+  chart:
+    spec:
+      version: ">=43.2.1"
+  values:
+    commonLabels:
+      tier: cluster
+    kubeControllerManager:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    grafana:
+      podLabels:
+        app: grafana
+      service:
+        labels:
+          app: grafana
+      grafana.ini:
+        server:
+          root_url: http://grafana.demo.lab
+      additionalDataSources:
+        - name: Loki
+          type: loki
+          access: proxy
+          uid: loki_ds
+          url: http://loki-stack:3100
+          jsonData:
+            maxLines: 1000
+      dashboardProviders:
+        dashboardproviders.yaml:
+          apiVersion: 1
+          providers:
+          - name: 'flux'
+            orgId: 1
+            folder: 'Flux'
+            type: file
+            disableDeletion: true
+            editable: false
+            options:
+              path: /var/lib/grafana/dashboards/flux
+      dashboards:
+        flux:
+          cluster:
+            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+            token: ''
+          control-plane:
+            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+            token: ''
+    alertmanager:
+      serviceMonitor:
+        scheme: "https"
+        tlsConfig:
+          caFile: /etc/prom-certs/root-cert.pem
+          certFile: /etc/prom-certs/cert-chain.pem
+          keyFile: /etc/prom-certs/key.pem
+          insecureSkipVerify: true
+      alertmanagerSpec:
+        listenLocal: true
+        externalUrl: http://alertmanager.demo.lab
+    prometheusOperator:
+      admissionWebhooks:
+        patch:
+          podAnnotations:
+            sidecar.istio.io/inject: "false"
+    prometheus:
+      serviceMonitor:
+        selfMonitor: true
+        scheme: "https"
+        tlsConfig:
+          caFile: /etc/prom-certs/root-cert.pem
+          certFile: /etc/prom-certs/cert-chain.pem
+          keyFile: /etc/prom-certs/key.pem
+          insecureSkipVerify: true
+      prometheusSpec:
+        externalLabels:
+          cluster: demolab
+          environment: staging
+        externalUrl: http://prometheus.demo.lab
+        listenLocal: true
+        ruleSelector:
+          matchLabels:
+            tier: cluster
+        serviceMonitorSelector:
+          matchLabels:
+            tier: cluster
+      additionalPodMonitors:
+        - name: source-controller
+          additionalLabels:
+            tier: cluster
+          selector:
+            matchLabels:
+              app: source-controller
+          namespaceSelector:
+            matchNames:
+              - flux-system
+          podMetricsEndpoints:
+            - port: http-prom
+        - name: kustomize-controller
+          additionalLabels:
+            tier: cluster
+          selector:
+            matchLabels:
+              app: kustomize-controller
+          namespaceSelector:
+            matchNames:
+              - flux-system
+          podMetricsEndpoints:
+            - port: http-prom
+        - name: helm-controller
+          additionalLabels:
+            tier: cluster
+          selector:
+            matchLabels:
+              app: helm-controller
+          namespaceSelector:
+            matchNames:
+              - flux-system
+          podMetricsEndpoints:
+            - port: http-prom
+        - name: notification-controller
+          additionalLabels:
+            tier: cluster
+          selector:
+            matchLabels:
+              app: notification-controller
+          namespaceSelector:
+            matchNames:
+              - flux-system
+          podMetricsEndpoints:
+            - port: http-prom
+
