@@ -15,6 +15,9 @@ spec:
       enabled: false
     kubeProxy:
       enabled: false
+    alertmanager:
+      serviceMonitor:
+        selfMonitor: false
     grafana:
       podLabels:
         app: grafana
