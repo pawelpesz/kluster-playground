@@ -23,24 +23,24 @@ spec:
           url: http://loki-stack:3100
           jsonData:
             maxLines: 1000
-      dashboardProviders:
-        dashboardproviders.yaml:
-          apiVersion: 1
-          providers:
-          - name: 'flux'
-            orgId: 1
-            folder: 'Flux'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /var/lib/grafana/dashboards/flux
-      dashboards:
-        flux:
-          cluster:
-            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
-            token: ''
-          control-plane:
-            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
-            token: ''
+#      dashboardProviders:
+#        dashboardproviders.yaml:
+#          apiVersion: 1
+#          providers:
+#          - name: 'flux'
+#            orgId: 1
+#            folder: 'Flux'
+#            type: file
+#            disableDeletion: true
+#            editable: false
+#            options:
+#              path: /var/lib/grafana/dashboards/flux
+#      dashboards:
+#        flux:
+#          cluster:
+#            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+#            token: ''
+#          control-plane:
+#            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+#            token: ''
   
