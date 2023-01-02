@@ -9,6 +9,12 @@ spec:
     spec:
       version: ">=43.2.1"
   values:
+    kubeControllerManager:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
     grafana:
       podLabels:
         app: grafana
