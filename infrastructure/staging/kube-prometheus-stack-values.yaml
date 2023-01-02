@@ -9,6 +9,8 @@ spec:
     spec:
       version: ">=43.2.1"
   values:
+    kubeEtcd:
+      enabled: false
     kubeControllerManager:
       enabled: false
     kubeScheduler:
