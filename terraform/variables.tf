@@ -8,5 +8,10 @@ variable "repository_name" {
   default = "playgound_kluster"
 }
 
+variable "target_sync_path" {
+  type = string
+  default = "clusters/staging"
+}
+
 variable "flux_token" {}
 

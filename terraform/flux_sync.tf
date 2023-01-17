@@ -1,6 +1,6 @@
 # Generate manifests
 data "flux_sync" "main" {
-  target_path = "clusters/staging"
+  target_path = "${var.target_sync_path}"
   url         = "https://github.com/${var.github_owner}/${var.repository_name}.git"
 }
 
