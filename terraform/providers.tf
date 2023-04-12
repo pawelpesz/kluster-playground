@@ -16,11 +16,14 @@ terraform {
   }
 }
 
-provider "flux" {
-  # config_path from KUBE_CONFIG_PATH
+provider "flux" { }
+
+provider "kubectl" {
+  config_path    = var.kube_config_path
+  config_context = var.kube_config_context
 }
 
 provider "kubernetes" {
-  # config_path from KUBE_CONFIG_PATH
-  # config_context from KUBE_CTX
+  config_path    = var.kube_config_path
+  config_context = var.kube_config_context
 }

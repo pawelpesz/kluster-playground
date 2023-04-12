@@ -1,6 +1,7 @@
 # Generate manifests
 data "flux_install" "main" {
-  target_path    = "clusters/staging"
+  target_path    = var.target_sync_path
+  version        = var.flux_version
   network_policy = false
 }
 
