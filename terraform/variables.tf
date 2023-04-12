@@ -1,17 +1,17 @@
 variable "github_owner" {
   type = string
-  default = "14ZOli"
 }
 
 variable "repository_name" {
   type = string
-  default = "playgound_kluster"
+}
+
+variable "flux_token" {
+  type      = string
+  sensitive = true
 }
 
 variable "target_sync_path" {
-  type = string
+  type    = string
   default = "clusters/staging"
 }
-
-variable "flux_token" {}
-
