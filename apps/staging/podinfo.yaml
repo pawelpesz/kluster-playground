@@ -23,7 +23,7 @@ spec:
   chart:
     spec:
       chart: podinfo
-      version: 6.2.3
+      version: ">=6.0.0"
       sourceRef:
         kind: HelmRepository
         name: podinfo
@@ -50,7 +50,7 @@ spec:
   chart:
     spec:
       chart: podinfo
-      version: 6.2.3
+      version: ">=6.0.0"
       sourceRef:
         kind: HelmRepository
         name: podinfo
