@@ -9,4 +9,3 @@ resources:
 patchesStrategicMerge:
   - grafana-loki-values.yaml
   - kube-prometheus-stack-values.yaml
-

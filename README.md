@@ -14,5 +14,3 @@ cd terraform/
 terraform init
 terraform apply -var=<flux-token>
 ```
-
-
