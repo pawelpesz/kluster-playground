@@ -3,8 +3,9 @@ variable "github_owner" {
 }
 
 variable "github_token" {
-  type      = string
-  sensitive = true
+  description = "Fine-grained token with read access to metadata and *read/write* access to code"
+  type        = string
+  sensitive   = true
 }
 
 variable "repository_name" {
