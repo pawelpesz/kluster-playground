@@ -12,6 +12,7 @@ spec:
     loki:
       enabled: true
       replicas: 1
+      isDefault: false # To avoid clashing with Prometheus, the default data source
       serviceMonitor:
         enabled: true
         interval: 30s
