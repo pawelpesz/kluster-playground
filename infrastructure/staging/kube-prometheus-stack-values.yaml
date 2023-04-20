@@ -26,27 +26,3 @@ spec:
       service:
         labels:
           app: grafana
-      dashboardProviders:
-        dashboardproviders.yaml:
-          apiVersion: 1
-          providers:
-          - name: 'flux'
-            orgId: 1
-            folder: 'Flux'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /var/lib/grafana/dashboards/flux
-      dashboards:
-        flux:
-          cluster:
-            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
-            token: ''
-          control-plane:
-            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
-            token: ''
-          logs:
-            url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/logs.json
-            token: ''
-
