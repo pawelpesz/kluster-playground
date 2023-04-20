@@ -26,15 +26,6 @@ spec:
       service:
         labels:
           app: grafana
-      additionalDataSources:
-        - name: Loki
-          type: loki
-          access: proxy
-          uid: loki_ds
-          url: http://loki-stack:3100
-          isDefault: false
-          jsonData:
-            maxLines: 1000
       dashboardProviders:
         dashboardproviders.yaml:
           apiVersion: 1
