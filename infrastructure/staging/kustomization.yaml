@@ -6,6 +6,7 @@ resources:
   - namespace.yaml
   - ../base/grafana-loki
   - ../base/kube-prometheus-stack
+  - ../base/flux-monitoring
 patchesStrategicMerge:
   - grafana-loki-values.yaml
   - kube-prometheus-stack-values.yaml
