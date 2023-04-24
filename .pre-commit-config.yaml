@@ -8,8 +8,10 @@ repos:
         args: ['--fix=lf']
       - id: check-yaml
         args: ['--allow-multiple-documents']
+      - id: check-merge-conflict
+      - id: no-commit-to-branch
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.77.2
+    rev: v1.77.3
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
