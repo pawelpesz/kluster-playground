@@ -16,3 +16,7 @@ repos:
       - id: terraform_fmt
       - id: terraform_docs
       - id: terraform_tflint
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: 3.1.0
+    hooks:
+      - id: commitizen
