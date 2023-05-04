@@ -1,12 +1,12 @@
 name: Terraform Checks
 
+env:
+  TERRAFORM_SRC: terraform
+
 on:
   pull_request:
     paths:
-    - 'terraform/**'
-
-env:
-  TERRAFORM_SRC: terraform
+    - '$TERRAFORM_SRC/**'
 
 jobs:
   terraform-fmt:
