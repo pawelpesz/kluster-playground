@@ -3,10 +3,7 @@ name: Terraform Checks
 env:
   TERRAFORM_SRC: terraform
 
-on:
-  pull_request:
-    paths:
-      - "$TERRAFORM_SRC/**"
+on: [pull_request]
 
 jobs:
   terraform-fmt:
