@@ -22,6 +22,14 @@ variable "flux_version" {
   default = "v2.0.0-rc.4"
 }
 
+variable "flux_components_extra" {
+  type = set(string)
+  default = [
+    "image-reflector-controller",
+    "image-automation-controller"
+  ]
+}
+
 variable "kube_config_path" {
   type    = string
   default = "~/.kube/config"
