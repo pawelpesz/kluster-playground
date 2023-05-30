@@ -19,7 +19,7 @@ variable "target_sync_path" {
 
 variable "flux_version" {
   type    = string
-  default = "v2.0.0-rc.1"
+  default = "v2.0.0-rc.4"
 }
 
 variable "kube_config_path" {
