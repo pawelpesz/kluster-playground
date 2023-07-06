@@ -19,7 +19,7 @@ variable "target_sync_path" {
 
 variable "flux_version" {
   type    = string
-  default = "v2.0.0-rc.5"
+  default = "v2.0.0"
 }
 
 variable "flux_components_extra" {
