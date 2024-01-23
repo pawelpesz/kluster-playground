@@ -9,10 +9,15 @@ repos:
       - id: check-merge-conflict
       - id: no-commit-to-branch
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.83.6
+    rev: v1.86.0
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
+        args:
+          - --args=--config=.terraform-docs.yaml
+          - --hook-config=--path-to-file=../README.md
+          - --hook-config=--add-to-existing-file=true
+          - --hook-config=--create-file-if-not-exist=false
       - id: terraform_tflint
         args:
           - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
@@ -21,6 +26,6 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: 3.12.0
+    rev: v3.13.0
     hooks:
       - id: commitizen
