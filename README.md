@@ -15,23 +15,23 @@ terraform init
 terraform apply -var=<flux-token>
 ```
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.5 |
-| <a name="requirement_flux"></a> [flux](#requirement\_flux) | ~> 1.2 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.11.0 |
+| <a name="requirement_flux"></a> [flux](#requirement\_flux) | ~> 1.5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_flux"></a> [flux](#provider\_flux) | ~> 1.2 |
+| <a name="provider_flux"></a> [flux](#provider\_flux) | ~> 1.5.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [flux_bootstrap_git.flux](https://registry.terraform.io/providers/fluxcd/flux/latest/docs/resources/bootstrap_git) | resource |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

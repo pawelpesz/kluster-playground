@@ -19,7 +19,7 @@ variable "target_sync_path" {
 
 variable "flux_version" {
   type    = string
-  default = "v2.2.2"
+  default = "v2.5.1"
 }
 
 variable "flux_components_extra" {
@@ -38,4 +38,10 @@ variable "kube_config_path" {
 variable "kube_config_context" {
   type    = string
   default = null
+}
+
+variable "log_level" {
+  description = "Log level for toolkit components"
+  type        = string
+  default     = "info"
 }
