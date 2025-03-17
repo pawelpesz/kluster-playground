@@ -39,3 +39,9 @@ variable "kube_config_context" {
   type    = string
   default = null
 }
+
+variable "log_level" {
+  description = "Log level for toolkit components"
+  type        = string
+  default     = "info"
+}
