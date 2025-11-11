@@ -41,8 +41,6 @@ jobs:
         with:
           tflint_version: latest
           cache: true
-      - name: Show TFLint version
-        run: tflint --version
       - name: Init TFLint
         run: tflint --init
         env:
