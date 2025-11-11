@@ -14,37 +14,37 @@ jobs:
     name: Check Terrform code formatting
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-      - name: Run terraform fmt
-        uses: dflook/terraform-fmt-check@v1
-        with:
-          path: ${{ env.TERRAFORM_SRC }}
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    - name: Run terraform fmt
+      uses: dflook/terraform-fmt-check@v1
+      with:
+        path: ${{ env.TERRAFORM_SRC }}
   terraform-validate:
     name: Validate Terrform code
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-      - name: Run terraform validate
-        uses: dflook/terraform-validate@v2
-        with:
-          path: ${{ env.TERRAFORM_SRC }}
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    - name: Run terraform validate
+      uses: dflook/terraform-validate@v2
+      with:
+        path: ${{ env.TERRAFORM_SRC }}
   tflint:
     name: Run TFLint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v6
-        with:
-          tflint_version: latest
-          cache: true
-      - name: Init TFLint
-        run: tflint --init
-        env:
-          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
-          GITHUB_TOKEN: ${{ github.token }}
-      - name: Run TFLint
-        run: tflint --config="../${{ env.TFLINT_CFG }}" --chdir="${{ env.TERRAFORM_SRC }}" --format compact
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v6
+      with:
+        tflint_version: latest
+        cache: true
+    - name: Init TFLint
+      run: tflint --init
+      env:
+        # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Run TFLint
+      run: tflint --config="../${{ env.TFLINT_CFG }}" --chdir="${{ env.TERRAFORM_SRC }}" --format compact
