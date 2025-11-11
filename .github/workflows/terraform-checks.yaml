@@ -41,10 +41,7 @@ jobs:
       with:
         tflint_version: latest
         cache: true
-    - name: Init TFLint
-      run: tflint --init
-      env:
         # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
-        GITHUB_TOKEN: ${{ github.token }}
+        github_token: ${{ github.token }}
     - name: Run TFLint
       run: tflint --config="../${{ env.TFLINT_CFG }}" --chdir="${{ env.TERRAFORM_SRC }}" --format compact
