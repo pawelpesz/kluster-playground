@@ -26,7 +26,8 @@ variable "flux_components_extra" {
   type = set(string)
   default = [
     "image-reflector-controller",
-    "image-automation-controller"
+    "image-automation-controller",
+    "source-watcher"
   ]
 }
 
