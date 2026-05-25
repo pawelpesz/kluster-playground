@@ -17,7 +17,7 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v6
     - name: Run terraform fmt
-      uses: dflook/terraform-fmt-check@v1
+      uses: dflook/terraform-fmt-check@v2
       with:
         path: ${{ env.TERRAFORM_SRC }}
   terraform-validate:
