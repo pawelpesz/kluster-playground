@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Run terraform fmt
-      uses: dflook/terraform-fmt-check@v1
+      uses: dflook/terraform-fmt-check@v2
       with:
         path: ${{ env.TERRAFORM_SRC }}
   terraform-validate:
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Run terraform validate
       uses: dflook/terraform-validate@v2
       with:
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Setup TFLint
       uses: terraform-linters/setup-tflint@v6
       with:
