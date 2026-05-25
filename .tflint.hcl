@@ -1,6 +1,6 @@
 plugin "terraform" {
   enabled = true
   source  = "github.com/terraform-linters/tflint-ruleset-terraform"
-  version = "0.13.0"
+  version = "0.14.1"
   preset  = "recommended"
 }
