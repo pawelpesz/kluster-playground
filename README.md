@@ -21,13 +21,13 @@ terraform apply -var=<flux-token>
 | Name | Version |
 | ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.15.0 |
-| <a name="requirement_flux"></a> [flux](#requirement\_flux) | ~> 1.7.0 |
+| <a name="requirement_flux"></a> [flux](#requirement\_flux) | ~> 1.8.0 |
 
 ## Providers
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_flux"></a> [flux](#provider\_flux) | ~> 1.7.0 |
+| <a name="provider_flux"></a> [flux](#provider\_flux) | ~> 1.8.0 |
 
 ## Resources
 
